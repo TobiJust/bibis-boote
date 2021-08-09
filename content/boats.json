@@ -1,0 +1,55 @@
+[
+  {
+    "name": "Kajak 1er",
+    "image": "kayak1er.jpg",
+    "seats": 1,
+    "slug": "Kajak1er",
+    "costs": {
+      "hour": 7,
+      "halfDay": 25,
+      "day": 35
+    },
+    "equipments": [
+      "Sitzpolster",
+      "Verstellbare, gepolsterte Rückenlehne",
+      "Verstellbare Fußstützen",
+      "Tragegriffe vorne + hinten",
+      "Stauraum mit Sicherungsleinen",
+      "inkl. Paddel"
+    ]
+  },
+  {
+    "name": "Kanadier 3er",
+    "image": "kanadier3er.jpg",
+    "seats": 3,
+    "slug": "Kanadier3er",
+    "costs": {
+      "hour": 8,
+      "halfDay": 30,
+      "day": 50
+    },
+    "equipments": [
+      "Klappbare Rückenlehnen",
+      "Tragegriffe vorne + hinten",
+      "Großzügiger Stauraum",
+      "inkl. Paddel"
+    ]
+  },
+  {
+    "name": "Kanadier 4er",
+    "image": "kanadier4er.jpg",
+    "seats": 4,
+    "slug": "Kanadier4er",
+    "costs": {
+      "hour": 9,
+      "halfDay": 35,
+      "day": 55
+    },
+    "equipments": [
+      "Klappbare Rückenlehnen",
+      "Tragegriffe vorne + hinten",
+      "Großzügiger Stauraum",
+      "inkl. Paddel"
+    ]
+  }
+]
