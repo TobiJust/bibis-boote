@@ -57,7 +57,7 @@
         </v-list-item>
         <v-list-item
           v-for="(locale, i) in availableLocales"
-          :key="i"
+          :key="locale.code"
           :to="switchLocalePath(locale.code)"
           router
           exact
@@ -75,7 +75,7 @@
       <v-banner
         elevation="10"
         color="primary"
-        class="white--text text-center text-h5 mb-8"
+        class="white--text text-center text-h5"
       >
         {{ $t('banner_text') }}
         <v-btn
@@ -92,7 +92,26 @@
       <!-- <v-container class="my-8"> -->
       <Nuxt />
       <!-- </v-container> -->
+      <v-container fluid class="accent white--text pa-8">
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="3">
+              <h1>{{ $t('title') }}</h1>
+              <p>
+                Am Hornungsee 4 <br />
+                15746 Groß Köris <br />
+              </p>
+              <p>
+                Öffnungszeiten <br />
+                Täglich 9:30 - 18:00
+              </p>
+            </v-col>
+            <v-col cols="6"> <ContactForm dense /> </v-col>
+          </v-row>
+        </v-container>
+      </v-container>
     </v-main>
+
     <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>

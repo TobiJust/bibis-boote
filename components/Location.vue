@@ -1,12 +1,20 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="6"> asdasd </v-col>
+      <v-col cols="12">
+        <h1 class="text-center">Kontakt & Anfahrt</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6" class="my-auto">
+        <Info class="mb-3" />
+        <OpeningHours class="mt-3" />
+      </v-col>
       <v-divider vertical></v-divider>
-      <v-col cols="6">
+      <v-col cols="6" class="my-auto">
         <iframe
-          width="700"
-          height="440"
+          height="550"
+          width="100%"
           :src="
             'https://maps.google.com/maps?width=700&amp;height=440&amp;hl=' +
             $i18n.locale +
@@ -40,5 +48,9 @@
 #gmap_canvas img {
   max-width: none !important;
   background: none !important;
+}
+.mail:hover,
+.phone:hover {
+  transform: scale(1.05);
 }
 </style>

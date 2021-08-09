@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="primary lighten-4">
+  <v-container fluid class="primary lighten-4 py-8">
     <v-row>
       <v-col cols="12" class="text-center">
         <h1>{{ $t('our_prices') }}</h1>
@@ -14,13 +14,13 @@
           :key="index"
           class="cost"
         >
-          <v-card class="mx-auto" max-width="800" elevation="10">
+          <v-card class="mx-auto" max-width="500" elevation="10">
             <v-card-text class="text-center text-body-1 py-8 black--text">
               <h2 class="mb-4 font-weight-light">
                 {{ boat.name }} {{ $t('rent') }} {{ $t('from') }}
               </h2>
               <h1 class="my-8 text-bold">{{ boat.costs.hour }}€</h1>
-              <v-list>
+              <v-list class="mx-14">
                 <v-list-item v-for="(cost, time) in boat.costs" :key="time">
                   <v-list-item-action>
                     <v-icon color="green lighten-2">mdi-check</v-icon>

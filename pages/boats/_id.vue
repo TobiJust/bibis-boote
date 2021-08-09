@@ -46,7 +46,6 @@
         </v-list>
 
         <v-divider class="my-6"></v-divider>
-        <ContactForm />
       </v-col>
       <v-col cols="4">
         <OpeningHours class="mb-6" />

@@ -1,9 +1,8 @@
 <template>
-  <v-container>
+  <v-container class="py-8">
     <v-row>
       <v-col cols="8" offset="2">
         <Location />
-        <ContactForm />
       </v-col>
     </v-row>
   </v-container>
