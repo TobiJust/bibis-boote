@@ -11,7 +11,7 @@
         class="mx-auto"
         max-width="500"
         elevation="10"
-        :to="localePath({ name: 'boats-id', params: { id: boat.slug } })"
+        :to="localePath({ name: 'boats-id', params: { id: boat.id } })"
       >
         <v-img :src="imageLink(boat.image)" height="350px"></v-img>
         <v-card-text class="text-center text-body-1 py-8">
@@ -46,9 +46,19 @@ export default {
     imageLink: function (img) {
       return require('@/assets/boats/' + img)
     },
+    getBoats: async function () {
+      const messagesRef = this.$fire.firestore.collection('boat')
+
+      const querySnapshot = await messagesRef.get()
+      console.log(querySnapshot)
+      this.boats = querySnapshot.docs.map((doc) =>
+        Object.assign({ id: doc.id }, doc.data())
+      )
+      console.log(this.boats)
+    },
   },
-  async fetch() {
-    this.boats = await this.$content('boats').fetch()
+  mounted() {
+    this.getBoats()
   },
 }
 </script>

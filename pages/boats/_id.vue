@@ -11,7 +11,7 @@
       <v-col cols="8" v-if="boat">
         <h1>{{ boat.name }} {{ $t('rent') }} in Groß Köris</h1>
         <v-divider class="mb-6"></v-divider>
-        <v-img :src="imageLink(boat.image)"></v-img>
+        <v-img :src="imageLink(boat.image)" max-height="700"></v-img>
         <h2 class="text-center my-6">{{ $t('rates') }}</h2>
 
         <v-row>
@@ -67,14 +67,21 @@ export default {
     imageLink: function (img) {
       return require('@/assets/boats/' + img)
     },
-  },
+    getBoats: async function () {
+      const messagesRef = this.$fire.firestore.collection('boat')
 
-  async fetch() {
-    this.boats = await this.$content('boats').fetch()
+      const querySnapshot = await messagesRef.get()
+      this.boats = querySnapshot.docs.map((doc) =>
+        Object.assign({ id: doc.id }, doc.data())
+      )
+    },
+  },
+  mounted() {
+    this.getBoats()
   },
   computed: {
     boat() {
-      return this.boats.find((b) => b.slug == this.$route.params.id)
+      return this.boats.find((b) => b.id == this.$route.params.id)
     },
     breadcrumbs() {
       const fullPath = this.$route.fullPath

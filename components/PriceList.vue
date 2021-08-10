@@ -2,7 +2,7 @@
   <v-container fluid class="primary lighten-4 py-8">
     <v-row>
       <v-col cols="12" class="text-center">
-        <h1>{{ $t('our_prices') }}</h1>
+        <h1 class="py-14">{{ $t('our_prices') }}</h1>
       </v-col>
     </v-row>
     <v-container>
@@ -54,9 +54,20 @@ export default {
       q: '',
     }
   },
-  methods: {},
-  async fetch() {
-    this.boats = await this.$content('boats').only(['name', 'costs']).fetch()
+  methods: {
+    getBoats: async function () {
+      const messagesRef = this.$fire.firestore.collection('boat')
+
+      const querySnapshot = await messagesRef.get()
+      console.log(querySnapshot)
+      this.boats = querySnapshot.docs.map((doc) =>
+        Object.assign({ id: doc.id }, doc.data())
+      )
+      console.log(this.boats)
+    },
+  },
+  mounted() {
+    this.getBoats()
   },
 }
 </script>

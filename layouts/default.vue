@@ -11,13 +11,13 @@
       <v-spacer />
       <v-tabs hide-slider centered>
         <v-tab
-          v-for="(item, i) in items"
-          :key="i"
+          v-for="item in items"
+          :key="item.title"
           :to="localePath(item.to)"
           router
           exact
         >
-          {{ item.title }}
+          {{ $t(item.title) }}
         </v-tab>
       </v-tabs>
       <v-spacer />
@@ -42,8 +42,8 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
+          v-for="item in items"
+          :key="item.title"
           :to="localePath(item.to)"
           router
           exact
@@ -52,11 +52,11 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title v-text="$t(item.title)" />
           </v-list-item-content>
         </v-list-item>
         <v-list-item
-          v-for="(locale, i) in availableLocales"
+          v-for="locale in availableLocales"
           :key="locale.code"
           :to="switchLocalePath(locale.code)"
           router
@@ -130,28 +130,33 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'welcome',
           to: '/',
         },
         {
           icon: 'mdi-currency-eur',
-          title: 'Preise',
+          title: 'prices',
           to: '/prices',
         },
         {
           icon: 'mdi-sail-boat',
-          title: 'Boote',
+          title: 'boats',
           to: '/boats',
         },
         {
           icon: 'mdi-image',
-          title: 'Gallery',
+          title: 'gallery',
           to: '/gallery',
         },
         {
           icon: 'mdi-email',
-          title: 'Kontakt',
+          title: 'contact',
           to: '/contact',
+        },
+        {
+          icon: 'mdi-account',
+          title: 'admin',
+          to: '/admin',
         },
       ],
       miniVariant: false,

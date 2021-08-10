@@ -19,6 +19,10 @@ export default {
     ]
   },
 
+  privateRuntimeConfig: {
+    gmailPassword: process.env.GMAIL_PASSWORD
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
@@ -45,9 +49,9 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
-    '@nuxt/content',
     '@nuxtjs/firebase',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@nuxtjs/date-fns'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -123,10 +127,14 @@ export default {
       messages: {
         de: {
           title: 'BiBi\'s Bootsverleih',
+          admin: 'Admin',
           banner_text: 'Wir haben geöffnet: Jetzt reservieren und Wunschtermin sichern!',
+          boats: 'Boote',
+          contact: 'Kontakt',
           day: 'Tag',
           equipments: 'Ausstattung',
           from: 'ab',
+          gallery: 'Gallerie',
           halfDay: 'halber Tag',
           hour: 'h',
           location: 'An- & Ablegestelle',
@@ -134,15 +142,30 @@ export default {
           optional_waterbag: 'wasserdichter Beutel (optional)',
           our_prices: 'Unsere Preise',
           per: 'pro',
+          prices: 'Preise',
           rates: 'Mietpreise & Tarife',
           rent: 'mieten',
+          welcome: 'Willkommen',
+          weekdays: {
+            monday: 'Montag', 
+            tuesday: 'Dienstag',
+            wednesday: 'Mittwoch',
+            thursday: 'Donnerstag', 
+            friday: 'Freitag', 
+            saturday: 'Samstag',
+            sunday:' Sonntag'
+          }
         },
         en: {
           title: 'BiBi\'s Boat Rental',
+          admin: 'Admin',
           banner_text: 'We\'re open: Reserve now and secure your preferred date!',
+          boats: 'Boats',
+          contact: 'Contact',
           day: 'day', 
           equipments: 'Equipments',
           from: 'from',
+          gallery: 'Gallery',
           halfDay: 'half day',
           hour: 'h',
           location: 'Location',
@@ -150,8 +173,19 @@ export default {
           optional_waterbag: 'waterproof bag (optional)',
           our_prices: 'Our Prices',
           per: 'per',
+          prices: 'Prices',
           rates: 'Rental Prices & Rates',
           rent: 'rent',
+          welcome: 'Welcome',
+          weekdays: {
+            monday: 'Monday', 
+            tuesday: 'Tuesday',
+            wednesday: 'Wednesday',
+            thursday: 'Thursday', 
+            friday: 'Friday', 
+            saturday: 'Saturday',
+            sunday:' Sunday'
+          }
         },
       }
     }
