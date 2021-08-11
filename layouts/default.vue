@@ -3,13 +3,18 @@
     <v-app-bar fixed flat app>
       <v-toolbar-title>
         <nuxt-link :to="localePath('index')">
-          <v-img src="/logo2.png" max-height="100" max-width="100" contain>
+          <v-img
+            src="/logo2.png"
+            :max-height="$vuetify.breakpoint.mobile ? '80' : '100'"
+            :max-width="$vuetify.breakpoint.mobile ? '80' : '100'"
+            contain
+          >
           </v-img>
         </nuxt-link>
         <!-- <nuxt-link :to="localePath('index')">{{ $t('title') }}</nuxt-link> -->
       </v-toolbar-title>
       <v-spacer />
-      <v-tabs hide-slider centered>
+      <v-tabs hide-slider centered v-if="!$vuetify.breakpoint.mobile">
         <v-tab
           v-for="item in items"
           :key="item.title"
@@ -92,10 +97,14 @@
       <!-- <v-container class="my-8"> -->
       <Nuxt />
       <!-- </v-container> -->
-      <v-container fluid class="accent white--text pa-8">
-        <v-container>
-          <v-row justify="center">
-            <v-col cols="3">
+      <v-container
+        :fluid="!$vuetify.breakpoint.xsOnly"
+        class="accent white--text"
+        :class="{ 'pa-8': !$vuetify.breakpoint.mobile }"
+      >
+        <v-row justify="center">
+          <v-col cols="12" lg="3">
+            <v-container :class="{ 'pa-0': !$vuetify.breakpoint.mobile }">
               <h1>{{ $t('title') }}</h1>
               <p>
                 Am Hornungsee 4 <br />
@@ -105,10 +114,12 @@
                 Öffnungszeiten <br />
                 Täglich 9:30 - 18:00
               </p>
-            </v-col>
-            <v-col cols="6"> <ContactForm dense /> </v-col>
-          </v-row>
-        </v-container>
+            </v-container>
+          </v-col>
+          <v-col cols="12" lg="6">
+            <ContactForm :dense="!$vuetify.breakpoint.mobile" dark />
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
 
@@ -184,6 +195,9 @@ a,
 .nuxt-link-active {
   text-decoration: none !important;
   color: black !important;
+}
+.v-banner__text {
+  line-height: 1.1em !important;
 }
 .phone:hover {
   transform: scale(1.05);

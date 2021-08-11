@@ -6,12 +6,12 @@
       </v-col>
     </v-row>
     <v-row justify="center" align="center">
-      <v-col cols="4" class="my-auto">
+      <v-col cols="12" lg="4" md="6" class="my-auto">
         <Info class="mb-3" />
         <OpeningHours class="mt-3" />
       </v-col>
-      <v-divider vertical></v-divider>
-      <v-col cols="4" class="my-auto">
+      <v-divider :vertical="!$vuetify.breakpoint.mobile"></v-divider>
+      <v-col cols="12" lg="4" md="6" class="my-auto">
         <iframe
           height="550"
           width="100%"

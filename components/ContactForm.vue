@@ -23,8 +23,8 @@
             <v-text-field
               v-model="name"
               :rules="rules.name"
-              :background-color="dense ? 'grey darken-2' : ''"
-              :dark="dense"
+              :background-color="dark ? 'grey darken-2' : ''"
+              :dark="dark"
               filled
               label="Name"
               color="white"
@@ -33,8 +33,8 @@
             <v-text-field
               v-model="email"
               :rules="rules.email"
-              :background-color="dense ? 'grey darken-2' : ''"
-              :dark="dense"
+              :background-color="dark ? 'grey darken-2' : ''"
+              :dark="dark"
               filled
               label="E-mail"
               required
@@ -42,8 +42,8 @@
             <v-text-field
               v-model="phoneNumber"
               :error-messages="errors"
-              :background-color="dense ? 'grey darken-2' : ''"
-              :dark="dense"
+              :background-color="dark ? 'grey darken-2' : ''"
+              :dark="dark"
               filled
               label="Phone Number"
             ></v-text-field>
@@ -52,8 +52,8 @@
             <v-textarea
               v-model="message"
               auto-grow
-              :background-color="dense ? 'grey darken-2' : ''"
-              :dark="dense"
+              :background-color="dark ? 'grey darken-2' : ''"
+              :dark="dark"
               filled
               label="Message"
               rows="5"
@@ -61,17 +61,17 @@
             <v-checkbox
               v-model="agreement"
               :rules="rules.required"
-              :dark="dense"
+              :dark="dark"
               color="secondary"
             >
               <template v-slot:label>
                 I agree to the&nbsp;
-                <a href="#" @click.stop.prevent="termsDialog = true"
-                  >Terms of Service</a
-                >
+                <a href="#" @click.stop.prevent="goTo('impressum')">
+                  Terms of Service
+                </a>
                 &nbsp;and&nbsp;
-                <a href="#" @click.stop.prevent="policyDialog = true"
-                  >Privacy Policy</a
+                <a href="#" @click.stop.prevent="goTo('privacy')">
+                  Privacy Policy </a
                 >*
               </template>
             </v-checkbox>
@@ -88,44 +88,12 @@
           class="white--text"
           color="secondary accent-4"
           depressed
-          :dark="dense"
+          :dark="dark"
         >
           Submit
         </v-btn>
       </v-card-actions>
     </v-form>
-
-    <!-- Dialogs -->
-    <v-dialog v-model="policyDialog" absolute max-width="400">
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-3"> Legal </v-card-title>
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="termsDialog" absolute max-width="400">
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-3">
-          Terms of Service
-        </v-card-title>
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -133,13 +101,12 @@
 export default {
   props: {
     dense: Boolean,
+    dark: Boolean,
   },
   data: () => ({
     agreement: false,
     alert: false,
     message: '',
-    policyDialog: false,
-    termsDialog: false,
     errors: '',
     form: false,
     isLoading: false,
@@ -157,6 +124,9 @@ export default {
     },
   }),
   methods: {
+    goTo: function (name) {
+      this.$router.push(this.localePath(name))
+    },
     saveContactMessage: function (e) {
       e.preventDefault()
       let valid = this.$refs.form.validate()

@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col
-        cols="6"
+        cols="12"
         lg="3"
         md="4"
         class="d-flex child-flex"

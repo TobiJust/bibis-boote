@@ -8,7 +8,7 @@
           </template>
         </v-breadcrumbs>
       </v-col>
-      <v-col cols="8" v-if="boat">
+      <v-col cols="12" lg="8" v-if="boat">
         <h1>{{ boat.name }} {{ $t('rent') }} in Groß Köris</h1>
         <v-divider class="mb-6"></v-divider>
         <v-img :src="imageLink(boat.image)" max-height="700"></v-img>
@@ -47,7 +47,7 @@
 
         <v-divider class="my-6"></v-divider>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="12" lg="4">
         <OpeningHours class="mb-6" />
         <Info class="my-6" />
       </v-col>

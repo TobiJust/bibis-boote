@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col
-      cols="6"
+      cols="12"
       lg="4"
       v-for="(boat, index) in boats"
       :key="index"
@@ -51,9 +51,9 @@ export default {
 
       const querySnapshot = await messagesRef.get()
       console.log(querySnapshot)
-      this.boats = querySnapshot.docs.map((doc) =>
-        Object.assign({ id: doc.id }, doc.data())
-      )
+      this.boats = querySnapshot.docs
+        .map((doc) => Object.assign({ id: doc.id }, doc.data()))
+        .sort((a, b) => a.costs.hour - b.costs.hour)
       console.log(this.boats)
     },
   },

@@ -60,10 +60,9 @@ export default {
 
       const querySnapshot = await messagesRef.get()
       console.log(querySnapshot)
-      this.boats = querySnapshot.docs.map((doc) =>
-        Object.assign({ id: doc.id }, doc.data())
-      )
-      console.log(this.boats)
+      this.boats = querySnapshot.docs
+        .map((doc) => Object.assign({ id: doc.id }, doc.data()))
+        .sort((a, b) => a.costs.hour - b.costs.hour)
     },
   },
   mounted() {
