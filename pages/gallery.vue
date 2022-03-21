@@ -58,13 +58,14 @@ export default {
     }
   },
   mounted() {
-    this.importAll(require.context('../assets/gallery/', true, /\.jpeg$/))
+    console.log(process.env.baseUrl)
+    console.log({ process })
+    console.log(process.env.firestoreCollection)
+    console.log(process.env.NODE_ENV)
+    this.getGalleryImages()
   },
 
   methods: {
-    importAll(r) {
-      r.keys().forEach((key) => this.images.push(r(key)))
-    },
     openDialog(index) {
       this.dialog = true
       this.model = index
@@ -80,6 +81,21 @@ export default {
       if (this.model > this.images.length - 1) {
         this.model = 0
       }
+    },
+    async getGalleryImages() {
+      var listRef = this.$fire.storage.ref().child("gallery")
+      listRef
+        .listAll()
+        .then((res) => {
+          Promise.all(res.items.map((item) => item.getDownloadURL())).then(
+            (contents) => {
+              this.images = contents
+            }
+          )
+        })
+        .catch(function (error) {
+          console.error("Error during fetch gallery images", error)
+        })
     },
   },
 }

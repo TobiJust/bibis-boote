@@ -7,30 +7,7 @@
       :key="index"
       class="boat"
     >
-      <v-card
-        class="mx-auto"
-        max-width="500"
-        elevation="10"
-        :to="localePath({ name: 'boats-id', params: { id: boat.id } })"
-      >
-        <v-img :src="imageLink(boat.image)" height="350px"></v-img>
-        <v-card-text class="text-center text-body-1 py-8">
-          <h2 class="mb-4">{{ boat.name }}</h2>
-          + {{ $t('optional_waterbag') }}
-        </v-card-text>
-
-        <v-card-actions class="justify-space-around grey lighten-3">
-          <div>{{ boat.seats }} Pers.</div>
-          <v-divider vertical></v-divider>
-          <v-btn color="orange lighten-2" text>
-            {{ boat.costs.hour }}€ {{ $t('per') }} {{ $t('hour') }}
-          </v-btn>
-          <v-divider vertical></v-divider>
-          <v-btn color="orange lighten-2" text>
-            {{ boat.costs.day }}€ {{ $t('per') }} {{ $t('day') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <SingleBoat :boat="boat" />
     </v-col>
   </v-row>
 </template>
@@ -39,15 +16,11 @@ export default {
   data() {
     return {
       boats: [],
-      q: '',
     }
   },
   methods: {
-    imageLink: function (img) {
-      return require('@/assets/boats/' + img)
-    },
     getBoats: async function () {
-      const messagesRef = this.$fire.firestore.collection('boat')
+      const messagesRef = this.$fire.firestore.collection(process.env.firestoreCollection)
 
       const querySnapshot = await messagesRef.get()
       console.log(querySnapshot)

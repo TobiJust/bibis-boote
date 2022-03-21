@@ -78,7 +78,7 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-divider v-if="!dense"></v-divider>
+      <v-divider v-show="!dense"></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
@@ -106,21 +106,21 @@ export default {
   data: () => ({
     agreement: false,
     alert: false,
-    message: '',
-    errors: '',
+    message: "",
+    errors: "",
     form: false,
     isLoading: false,
     valid: false,
-    name: '',
-    phoneNumber: '',
-    email: '',
+    name: "",
+    phoneNumber: "",
+    email: "",
     rules: {
-      name: [(v) => !!v || 'Name is required'],
+      name: [(v) => !!v || "Name is required"],
       email: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+/.test(v) || "E-mail must be valid",
       ],
-      required: [(v) => !!v || 'This field is required'],
+      required: [(v) => !!v || "This field is required"],
     },
   }),
   methods: {
@@ -133,7 +133,7 @@ export default {
       if (!valid) {
         return
       }
-      const messagesRef = this.$fire.firestore.collection('message')
+      const messagesRef = this.$fire.firestore.collection("message")
       let sender = messagesRef.add({
         name: this.name,
         email: this.email,

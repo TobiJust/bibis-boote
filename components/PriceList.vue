@@ -2,7 +2,7 @@
   <v-container fluid class="primary lighten-4 py-8">
     <v-row>
       <v-col cols="12" class="text-center">
-        <h1 class="py-14">{{ $t('our_prices') }}</h1>
+        <h1 class="py-14">{{ $t("our_prices") }}</h1>
       </v-col>
     </v-row>
     <v-container>
@@ -17,11 +17,14 @@
           <v-card class="mx-auto" max-width="500" elevation="10">
             <v-card-text class="text-center text-body-1 py-8 black--text">
               <h2 class="mb-4 font-weight-light">
-                {{ boat.name }} {{ $t('rent') }} {{ $t('from') }}
+                {{ boat.name }} {{ $t("rent") }} {{ $t("from") }}
               </h2>
               <h1 class="my-8 text-bold">{{ boat.costs.hour }}€</h1>
               <v-list class="mx-14">
-                <v-list-item v-for="(cost, time) in boat.costs" :key="time">
+                <v-list-item
+                  v-for="(cost, time) in sortedCosts(boat.costs)"
+                  :key="time"
+                >
                   <v-list-item-action>
                     <v-icon color="green lighten-2">mdi-check</v-icon>
                   </v-list-item-action>
@@ -51,18 +54,23 @@ export default {
   data() {
     return {
       boats: [],
-      q: '',
     }
   },
   methods: {
     getBoats: async function () {
-      const messagesRef = this.$fire.firestore.collection('boat')
+      const messagesRef = this.$fire.firestore.collection(
+        process.env.firestoreCollection
+      )
 
       const querySnapshot = await messagesRef.get()
-      console.log(querySnapshot)
       this.boats = querySnapshot.docs
         .map((doc) => Object.assign({ id: doc.id }, doc.data()))
         .sort((a, b) => a.costs.hour - b.costs.hour)
+    },
+    sortedCosts: function (costs) {
+      return Object.entries(costs)
+        .sort(([, a], [, b]) => a - b)
+        .reduce((r, [k, v]) => ({ ...r, [k]: v }), {})
     },
   },
   mounted() {

@@ -16,7 +16,10 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/logo2.ico" }],
   },
-
+  env: {
+    baseUrl: process.env.BASE_URL || "http://localhost:3000",
+    firestoreCollection: "boat-" + process.env.NODE_ENV,
+  },
   privateRuntimeConfig: {
     gmailPassword: process.env.GMAIL_PASSWORD,
   },
@@ -110,6 +113,7 @@ export default {
     },
     services: {
       firestore: true,
+      storage: true,
     },
   },
 
@@ -199,5 +203,12 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    babel: {
+      plugins: [
+        ["@babel/plugin-proposal-private-methods", { loose: true }],
+        ["@babel/plugin-proposal-private-property-in-object", { loose: true }],
+      ],
+    },
+  },
 }

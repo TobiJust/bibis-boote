@@ -1,117 +1,360 @@
 <template>
   <v-container>
-    <v-sheet tile height="54" class="d-flex">
-      <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-        Today
-      </v-btn>
-
-      <v-btn icon @click="$refs.calendar.prev()">
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
-      <v-btn icon @click="$refs.calendar.next()">
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
-            <span>{{ type }}</span>
-            <v-icon right> mdi-menu-down </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(t, index) in types"
-            :key="index"
-            @click="type = t"
+    <v-row>
+      <v-slide-group
+        v-model="model"
+        class="pa-4"
+        active-class="success"
+        show-arrows
+      >
+        <v-slide-item v-slot="{ active }">
+          <v-card
+            :color="active ? undefined : 'grey lighten-1'"
+            class="ma-4"
+            height="200"
+            width="200"
+            @click="newBoat(0)"
           >
-            <v-list-item-title>{{ t }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-sheet>
-    <v-sheet height="600">
-      <v-calendar
-        ref="calendar"
-        v-model="value"
-        :categories="categories"
-        :weekdays="weekday"
-        :type="type"
-        :events="events"
-        event-overlap-mode="column"
-        :event-overlap-threshold="30"
-        :event-color="getEventColor"
-        @change="getEvents"
-      ></v-calendar>
-    </v-sheet>
+            <v-row class="fill-height" align="center" justify="center">
+              <v-icon
+                color="white"
+                size="48"
+                v-text="'mdi-plus-circle-outline'"
+              ></v-icon>
+            </v-row>
+          </v-card>
+        </v-slide-item>
+        <v-slide-item v-for="(boat, n) in boats" :key="n" v-slot="{ active }">
+          <v-card
+            :color="active ? undefined : 'grey lighten-1'"
+            class="ma-4"
+            height="200"
+            width="200"
+            @click="selectBoat(boat, n + 1)"
+          >
+            <v-img
+              :src="boat.image"
+              :height="active ? '195px' : '200px'"
+              width="200px"
+              class="white--text align-end"
+            >
+              <v-card-title>
+                {{ boat.name }}
+              </v-card-title>
+            </v-img>
+          </v-card>
+          <!-- <SingleBoat :boat="boat" /> -->
+        </v-slide-item>
+      </v-slide-group>
+    </v-row>
+    <v-divider class="my-4" />
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="4000"
+      top
+      :color="isAdded ? 'success' : 'info'"
+      elevation="24"
+    >
+      {{ snackbarText }}
+    </v-snackbar>
+    <v-row v-if="selectedBoat == null" align="center" justify="center">
+      <v-col cols="12" class="py-8 text-center">
+        <h2>No boat selected</h2>
+      </v-col>
+    </v-row>
+    <v-row v-if="selectedBoat != null" class="mb-8">
+      <v-col cols="12">
+        <v-hover v-slot="{ hover }">
+          <v-card
+            color="grey lighten-1"
+            class="ma-4"
+            height="250"
+            @click="click1"
+          >
+            <v-row
+              v-if="selectedBoat.image == null"
+              class="fill-height"
+              align="center"
+              justify="center"
+            >
+              <v-icon
+                color="white"
+                size="48"
+                v-text="'mdi-plus-circle-outline'"
+              ></v-icon>
+              <div>Upload image for new boat</div>
+            </v-row>
+
+            <v-img
+              v-if="selectedBoat.image"
+              :src="selectedBoat.image"
+              height="250px"
+            >
+              <div
+                v-if="hover"
+                class="foo d-flex transition-fast-in-fast-out grey darken-2 v-card--reveal text-h5 white--text"
+                style="height: 100%"
+                align="center"
+                justify="center"
+              >
+                <v-icon color="white" size="48" v-text="'mdi-autorenew'">
+                </v-icon>
+                <div>Upload new image for selected boat</div>
+              </div>
+            </v-img>
+          </v-card>
+        </v-hover>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          label="Title"
+          outlined
+          v-model="selectedBoat.name"
+        ></v-text-field>
+        <v-textarea
+          label="Description"
+          outlined
+          v-model="selectedBoat.description"
+          class="text-pre"
+        ></v-textarea>
+        <v-text-field
+          label="Number of Seats"
+          outlined
+          v-model="selectedBoat.seats"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="6">
+        <v-text-field
+          label="Hour"
+          prefix="€"
+          outlined
+          v-model="selectedBoat.costs.hour"
+        ></v-text-field>
+        <v-text-field
+          label="Half Day"
+          prefix="€"
+          outlined
+          v-model="selectedBoat.costs.halfDay"
+        ></v-text-field>
+        <v-text-field
+          label="Day"
+          prefix="€"
+          outlined
+          v-model="selectedBoat.costs.day"
+        ></v-text-field>
+        <v-divider class="my-4" />
+        <div v-for="(equipment, i) in selectedBoat.equipments" :key="i">
+          <v-text-field
+            :label="'Equipment ' + (i + 1)"
+            outlined
+            :append-icon="
+              i || (!i && selectedBoat.equipments.length > 1)
+                ? 'mdi-delete'
+                : null
+            "
+            @click:append="removeEquipment(i)"
+            v-model="selectedBoat.equipments[i]"
+          ></v-text-field>
+          <v-btn
+            plain
+            secondary
+            @click="addEquipment(i)"
+            v-show="i == selectedBoat.equipments.length - 1"
+          >
+            Add equipment</v-btn
+          >
+        </div>
+        <input
+          type="file"
+          ref="input1"
+          style="display: none"
+          @change="previewImage"
+          accept="image/*"
+        />
+      </v-col>
+    </v-row>
+
+    <v-bottom-navigation fixed grow>
+      <v-btn @click="save()" :disabled="!selectedBoat">
+        <span>Save</span>
+        <v-icon>mdi-content-save</v-icon>
+      </v-btn>
+      <v-btn @click="remove()" :disabled="!selectedBoat || !selectedBoat.id">
+        Delete
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </v-container>
 </template>
 <script>
 export default {
   data: () => ({
-    type: 'month',
-    types: ['month', 'week', 'day', 'category'],
-    categories: ['John Smith', 'Tori Walker'],
-    weekday: [1, 2, 3, 4, 5, 6, 0],
-    value: '',
-    events: [],
-    colors: [
-      'blue',
-      'indigo',
-      'deep-purple',
-      'cyan',
-      'green',
-      'orange',
-      'grey darken-1',
-    ],
-    names: [
-      'Meeting',
-      'Holiday',
-      'PTO',
-      'Travel',
-      'Event',
-      'Birthday',
-      'Conference',
-      'Party',
-    ],
+    boats: [],
+    model: null,
+    selectedBoat: null,
+    uploadValue: 0,
+    img1: null,
+    imageData: null,
+    isAdded: false,
+    snackbar: false,
+    snackbarText: "",
+    value: "recent",
+    initialData: {
+      type: null,
+      costs: {
+        day: null,
+        halfDay: null,
+        hour: null,
+      },
+      equipments: [""],
+      image: null,
+      name: "",
+      seats: null,
+    },
   }),
   methods: {
-    setToday() {
-      this.value = ''
+    removeEquipment: function (index) {
+      this.selectedBoat.equipments.splice(index, 1)
     },
-    getEvents({ start, end }) {
-      const events = []
+    addEquipment: function () {
+      this.selectedBoat.equipments.push("")
+    },
+    selectBoat(boat, index) {
+      this.selectedBoat = boat
+      this.model = index
+    },
+    newBoat(index) {
+      this.selectedBoat = { ...this.initialData }
+      this.model = index
+    },
+    getBoats: async function () {
+      const messagesRef = this.$fire.firestore.collection(
+        process.env.firestoreCollection
+      )
 
-      const min = new Date(`${start.date}T00:00:00`)
-      const max = new Date(`${end.date}T23:59:59`)
-      const days = (max.getTime() - min.getTime()) / 86400000
-      const eventCount = this.rnd(days, days + 20)
+      const querySnapshot = await messagesRef.get()
+      this.boats = querySnapshot.docs
+        .map((doc) => Object.assign({ id: doc.id }, doc.data()))
+        .sort((a, b) => a.costs.hour - b.costs.hour)
+      console.log(this.boats)
+    },
+    click1() {
+      this.$refs.input1.click()
+    },
 
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0
-        const firstTimestamp = min.getTime()
-        const first = new Date(firstTimestamp)
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        const second = new Date(first.getTime() + 300)
-
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-          category: this.categories[this.rnd(0, this.categories.length - 1)],
+    previewImage(event) {
+      this.uploadValue = 0
+      this.img1 = null
+      this.imageData = event.target.files[0]
+      this.onImageUpload()
+    },
+    onImageUpload() {
+      this.img1 = null
+      const storageRef = this.$fire.storage
+        .ref(`${process.env.firestoreCollection}/${this.imageData.name}`)
+        .put(this.imageData)
+      storageRef.on(
+        `state_changed`,
+        (snapshot) => {
+          this.uploadValue =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        },
+        (error) => {
+          console.log(error.message)
+        },
+        () => {
+          this.uploadValue = 100
+          storageRef.snapshot.ref.getDownloadURL().then((url) => {
+            this.selectedBoat.image = url
+          })
+        }
+      )
+    },
+    remove() {
+      this.$fire.firestore
+        .collection(process.env.firestoreCollection)
+        .doc(this.selectedBoat.id)
+        .delete()
+        .then(() => {
+          this.$fire.storage
+            .refFromURL(this.selectedBoat.image)
+            .delete()
+            .then(() => {
+              console.log("Deleted image from storage")
+            })
+            .catch((error) => {
+              console.error("Error during deletion of image from storage")
+            })
+          this.snackbar = true
+          this.isAdded = false
+          this.snackbarText = `Boat ${this.selectedBoat.name} deleted`
+          this.selectedBoat = null
+          this.model = null
+          this.getBoats()
         })
+    },
+    save() {
+      console.log(this.imageData?.name)
+      console.log(!this.imageData?.name)
+      if (!this.imageData?.name || !this.selectedBoat.name) {
+        this.snackbar = true
+        this.isAdded = false
+        this.snackbarText = !this.imageData?.name
+          ? "No image selected"
+          : "No title set"
+        return
       }
-
-      this.events = events
+      // delete old image file location
+      this.$fire.storage.refFromURL(this.selectedBoat.image).delete()
+      this.$fire.storage
+        .ref(
+          `${process.env.firestoreCollection}/${this.selectedBoat.name}/${this.imageData.name}`
+        )
+        .put(this.imageData)
+        .then((snapshot) => {
+          console.log(snapshot)
+          snapshot.ref.getDownloadURL().then((url) => {
+            console.log(url)
+            this.selectedBoat.image = url
+            var storageRef = this.$fire.firestore.collection(
+              process.env.firestoreCollection
+            )
+            if (this.selectedBoat.id != null) {
+              // update
+              storageRef = storageRef
+                .doc(this.selectedBoat.id)
+                .update(this.selectedBoat)
+            } else {
+              // add new
+              storageRef = storageRef.add(this.selectedBoat)
+            }
+            storageRef
+              .then((doc) => {
+                console.log(doc)
+                console.log("Document successfully written!")
+                this.snackbar = true
+                this.isAdded = true
+                this.snackbarText = `New boat ${this.selectedBoat.name} added`
+                this.selectedBoat = null
+                this.model = null
+                this.imageData = null
+                this.getBoats()
+              })
+              .catch((error) => {
+                console.error("Error writing document: ", error)
+              })
+          })
+        })
     },
-    getEventColor(event) {
-      return event.color
-    },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a
-    },
+  },
+  mounted() {
+    console.log(process.env.GMAIL_PASSWORD)
+    this.getBoats()
   },
 }
 </script>
+<style scoped>
+.foo {
+  opacity: 0.6;
+}
+</style>

@@ -41,7 +41,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="text-h6">
-              <nuxt-link :to="localePath('index')">{{ $t('title') }}</nuxt-link>
+              <nuxt-link :to="localePath('index')">{{ $t("title") }}</nuxt-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -78,11 +78,19 @@
     </v-navigation-drawer>
     <v-main>
       <v-banner
+        v-if="getRouteBaseName().startsWith('admin')"
+        color="error"
+        class="white--text text-center text-h5"
+      >
+        Admin View
+      </v-banner>
+      <v-banner
         elevation="10"
         color="primary"
         class="white--text text-center text-h5"
+        v-if="!getRouteBaseName().startsWith('admin')"
       >
-        {{ $t('banner_text') }}
+        {{ $t("banner_text") }} {{ $route.parent }}
         <v-btn
           color="secondary"
           elevation="8"
@@ -101,11 +109,12 @@
         :fluid="!$vuetify.breakpoint.xsOnly"
         class="accent white--text"
         :class="{ 'pa-8': !$vuetify.breakpoint.mobile }"
+        v-if="!getRouteBaseName().startsWith('admin')"
       >
         <v-row justify="center">
           <v-col cols="12" lg="3">
             <v-container :class="{ 'pa-0': !$vuetify.breakpoint.mobile }">
-              <h1>{{ $t('title') }}</h1>
+              <h1>{{ $t("title") }}</h1>
               <p>
                 Am Hornungsee 4 <br />
                 15746 Groß Köris <br />
@@ -130,7 +139,7 @@
 </template>
 
 <script>
-import CountryFlag from 'vue-country-flag'
+import CountryFlag from "vue-country-flag"
 
 export default {
   data() {
@@ -140,34 +149,34 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'welcome',
-          to: '/',
+          icon: "mdi-apps",
+          title: "welcome",
+          to: "/",
         },
         {
-          icon: 'mdi-currency-eur',
-          title: 'prices',
-          to: '/prices',
+          icon: "mdi-currency-eur",
+          title: "prices",
+          to: "/prices",
         },
         {
-          icon: 'mdi-sail-boat',
-          title: 'boats',
-          to: '/boats',
+          icon: "mdi-sail-boat",
+          title: "boats",
+          to: "/boats",
         },
         {
-          icon: 'mdi-image',
-          title: 'gallery',
-          to: '/gallery',
+          icon: "mdi-image",
+          title: "gallery",
+          to: "/gallery",
         },
         {
-          icon: 'mdi-email',
-          title: 'contact',
-          to: '/contact',
+          icon: "mdi-email",
+          title: "contact",
+          to: "/contact",
         },
         {
-          icon: 'mdi-account',
-          title: 'admin',
-          to: '/admin',
+          icon: "mdi-account",
+          title: "admin",
+          to: "/admin",
         },
       ],
       miniVariant: false,
