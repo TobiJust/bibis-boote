@@ -3,6 +3,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.stopRenderingLineAfter": 200,
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  "prettier.jsxBracketSameLine": true,
+  "volar.autoCompleteRefs": true
 }

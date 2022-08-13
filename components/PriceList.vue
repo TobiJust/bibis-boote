@@ -7,13 +7,7 @@
     </v-row>
     <v-container>
       <v-row justify="center" align="center">
-        <v-col
-          cols="12"
-          lg="4"
-          v-for="(boat, index) in boats"
-          :key="index"
-          class="cost"
-        >
+        <v-col cols="12" lg="4" v-for="(boat, index) in boats" :key="index" class="cost">
           <v-card class="mx-auto" max-width="500" elevation="10">
             <v-card-text class="text-center text-body-1 py-8 black--text">
               <h2 class="mb-4 font-weight-light">
@@ -21,17 +15,49 @@
               </h2>
               <h1 class="my-8 text-bold">{{ boat.costs.hour }}€</h1>
               <v-list class="mx-14">
-                <v-list-item
-                  v-for="(cost, time) in sortedCosts(boat.costs)"
-                  :key="time"
-                >
+                <v-list-item v-for="(cost, time) in sortedCosts(boat.costs)" :key="time">
                   <v-list-item-action>
                     <v-icon color="green lighten-2">mdi-check</v-icon>
                   </v-list-item-action>
                   <v-list-item-content>
-                    <v-list-item-title
-                      v-text="`${cost}€ ${$t('per')} ${$t(time)}`"
-                    />
+                    <v-list-item-title v-text="`${cost}€ ${$t('per')} ${$t(time)}`" />
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-card class="mx-auto" max-width="500" elevation="10">
+            <v-card-text class="text-center text-body-1 py-8 black--text">
+              <h2 class="mb-4 font-weight-light">
+                Nach vorheriger Vereinbarung
+              </h2>
+              <v-list class="mx-14">
+                <v-list-item>
+                  <v-list-item-action>
+                    <v-icon color="green lighten-2">mdi-check</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>Mehrtägige Fahrten</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-action>
+                    <v-icon color="green lighten-2">mdi-check</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>Gruppenevents</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-action>
+                    <v-icon color="green lighten-2">mdi-check</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>Alles möglich!</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>

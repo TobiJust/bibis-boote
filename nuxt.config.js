@@ -20,9 +20,9 @@ export default {
     baseUrl: process.env.BASE_URL || "http://localhost:3000",
     firestoreCollection: "boat-" + process.env.NODE_ENV,
   },
-  privateRuntimeConfig: {
-    gmailPassword: process.env.GMAIL_PASSWORD,
-  },
+  // privateRuntimeConfig: {
+  //   gmailPassword:  ,
+  // },s
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],

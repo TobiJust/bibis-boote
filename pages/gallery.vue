@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-8">
+  <v-container class="py-8 gallery">
     <v-row>
       <v-col cols="12" class="text-center">
         <h1 class="py-14">Gallery</h1>
@@ -100,3 +100,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.gallery {
+  min-height: 90vh;
+}
+</style>

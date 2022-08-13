@@ -1,13 +1,23 @@
 <template>
+
+
   <v-container>
+
+
     <v-row>
+
+
       <v-slide-group
         v-model="model"
         class="pa-4"
         active-class="success"
         show-arrows
       >
+
+
         <v-slide-item v-slot="{ active }">
+
+
           <v-card
             :color="active ? undefined : 'grey lighten-1'"
             class="ma-4"
@@ -15,16 +25,30 @@
             width="200"
             @click="newBoat(0)"
           >
+
+
             <v-row class="fill-height" align="center" justify="center">
+
+
               <v-icon
                 color="white"
                 size="48"
                 v-text="'mdi-plus-circle-outline'"
               ></v-icon>
+
+
             </v-row>
+
+
           </v-card>
+
+
         </v-slide-item>
+
+
         <v-slide-item v-for="(boat, n) in boats" :key="n" v-slot="{ active }">
+
+
           <v-card
             :color="active ? undefined : 'grey lighten-1'"
             class="ma-4"
@@ -32,22 +56,40 @@
             width="200"
             @click="selectBoat(boat, n + 1)"
           >
+
+
             <v-img
               :src="boat.image"
               :height="active ? '195px' : '200px'"
               width="200px"
               class="white--text align-end"
             >
-              <v-card-title>
-                {{ boat.name }}
-              </v-card-title>
+
+
+              <v-card-title> {{ boat.name }} </v-card-title>
+
+
             </v-img>
+
+
           </v-card>
+
+
           <!-- <SingleBoat :boat="boat" /> -->
+
+
         </v-slide-item>
+
+
       </v-slide-group>
+
+
     </v-row>
+
+
     <v-divider class="my-4" />
+
+
     <v-snackbar
       v-model="snackbar"
       :timeout="4000"
@@ -55,95 +97,173 @@
       :color="isAdded ? 'success' : 'info'"
       elevation="24"
     >
-      {{ snackbarText }}
+       {{ snackbarText }}
     </v-snackbar>
+
+
     <v-row v-if="selectedBoat == null" align="center" justify="center">
+
+
       <v-col cols="12" class="py-8 text-center">
+
+
         <h2>No boat selected</h2>
+
+
       </v-col>
+
+
     </v-row>
+
+
     <v-row v-if="selectedBoat != null" class="mb-8">
+
+
       <v-col cols="12">
+
+
         <v-hover v-slot="{ hover }">
+
+
           <v-card
             color="grey lighten-1"
             class="ma-4"
             height="250"
             @click="click1"
           >
+
+
             <v-row
               v-if="selectedBoat.image == null"
               class="fill-height"
               align="center"
               justify="center"
             >
+
+
               <v-icon
                 color="white"
                 size="48"
                 v-text="'mdi-plus-circle-outline'"
               ></v-icon>
+
+
               <div>Upload image for new boat</div>
+
+
             </v-row>
+
 
             <v-img
               v-if="selectedBoat.image"
               :src="selectedBoat.image"
               height="250px"
             >
+
+
               <div
                 v-if="hover"
-                class="foo d-flex transition-fast-in-fast-out grey darken-2 v-card--reveal text-h5 white--text"
+                class="
+                  foo
+                  d-flex
+                  transition-fast-in-fast-out
+                  grey
+                  darken-2
+                  v-card--reveal
+                  text-h5
+                  white--text
+                "
                 style="height: 100%"
                 align="center"
                 justify="center"
               >
+
+
                 <v-icon color="white" size="48" v-text="'mdi-autorenew'">
+
+
                 </v-icon>
+
+
                 <div>Upload new image for selected boat</div>
+
+
               </div>
+
+
             </v-img>
+
+
           </v-card>
+
+
         </v-hover>
+
+
       </v-col>
+
+
       <v-col cols="6">
+
+
         <v-text-field
           label="Title"
           outlined
           v-model="selectedBoat.name"
         ></v-text-field>
+
+
         <v-textarea
           label="Description"
           outlined
           v-model="selectedBoat.description"
           class="text-pre"
         ></v-textarea>
+
+
         <v-text-field
           label="Number of Seats"
           outlined
           v-model="selectedBoat.seats"
         ></v-text-field>
+
+
       </v-col>
+
+
       <v-col cols="6">
+
+
         <v-text-field
           label="Hour"
           prefix="€"
           outlined
           v-model="selectedBoat.costs.hour"
         ></v-text-field>
+
+
         <v-text-field
           label="Half Day"
           prefix="€"
           outlined
           v-model="selectedBoat.costs.halfDay"
         ></v-text-field>
+
+
         <v-text-field
           label="Day"
           prefix="€"
           outlined
           v-model="selectedBoat.costs.day"
         ></v-text-field>
+
+
         <v-divider class="my-4" />
+
+
         <div v-for="(equipment, i) in selectedBoat.equipments" :key="i">
+
+
           <v-text-field
             :label="'Equipment ' + (i + 1)"
             outlined
@@ -155,15 +275,21 @@
             @click:append="removeEquipment(i)"
             v-model="selectedBoat.equipments[i]"
           ></v-text-field>
+
+
           <v-btn
             plain
             secondary
             @click="addEquipment(i)"
             v-show="i == selectedBoat.equipments.length - 1"
           >
-            Add equipment</v-btn
-          >
+             Add equipment
+          </v-btn>
+
+
         </div>
+
+
         <input
           type="file"
           ref="input1"
@@ -171,21 +297,46 @@
           @change="previewImage"
           accept="image/*"
         />
+
+
       </v-col>
+
+
     </v-row>
 
+
     <v-bottom-navigation fixed grow>
+
+
       <v-btn @click="save()" :disabled="!selectedBoat">
+
+
         <span>Save</span>
+
+
         <v-icon>mdi-content-save</v-icon>
+
+
       </v-btn>
+
+
       <v-btn @click="remove()" :disabled="!selectedBoat || !selectedBoat.id">
-        Delete
+         Delete
         <v-icon>mdi-delete</v-icon>
+
+
       </v-btn>
+
+
     </v-bottom-navigation>
+
+
   </v-container>
+
+
 </template>
+
+
 <script>
 export default {
   data: () => ({
@@ -294,6 +445,7 @@ export default {
         })
     },
     save() {
+      console.log(this.selectedBoat?.image)
       console.log(this.imageData?.name)
       console.log(!this.imageData?.name)
       if (!this.imageData?.name || !this.selectedBoat.name) {
@@ -353,8 +505,12 @@ export default {
   },
 }
 </script>
+
+
 <style scoped>
 .foo {
   opacity: 0.6;
 }
 </style>
+
+
